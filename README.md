@@ -1,16 +1,30 @@
-### Hi there 👋
+<div id="header" align="center">
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjBucHB4ZDExcnMzNnJ2Z2oxaG9hZzFhajlzenI5ejZoMWZxcTNxbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JIX9t2j0ZTN9S/giphy.gif" width="100"/>
+</div>
 
-<!--
-**MrShaller/MrShaller** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+<div id="header" align="center">
+  <a href="https://t.me/ShallerMau">
+    <img src="https://img.shields.io/badge/Telegram-blue?style=for-the-badge&logo=telegram&logoColor=white" alt="Youtube Badge"/>
+  </a>
+</div>
 
-Here are some ideas to get you started:
+Mail : nikitanedobezkin@gmail.com
+---
+### :man_technologist: About Me :
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+🌐 Location: [Saint-Petersburg, Russia]
+
+🎓 Education:
+- Bachelor's in Petroleum and Gas Engineering (Mining University),
+- Master's in Artificial Intelligence in Industry (ITMO University)
+
+🚀 Skills:
+- 💻 Programming: Python, C++
+- 🤖 Data Science/ML/CV.
+- 📊 Tools & Libraries: TensorFlow, PyTorch, Scikit-Learn, Pandas, NumPy
+- 🛠️ Other Tech: Git, Docker, SQL
+
+---
+
+### :writing_hand: Projects and Hackatons :
+
