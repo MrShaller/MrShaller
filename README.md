@@ -28,8 +28,8 @@ Mail : nikitanedobezkin@gmail.com
 
 ### :writing_hand: Projects and Hackatons :
 2023
-10.2023 [DataWagon][1] hackaton 5st place
-10.2023 [Rosneft][2] hackaton top 10 out 180
+- 11.2023 [DataWagon][1] hackaton 5st place
+- 09.2023 [Rosneft][2] hackaton top 10 out 180
 
 [1]: https://github.com/MrShaller/DataWagon_Hackaton
 [2]: https://github.com/MrShaller/Rosneft_hackaton
