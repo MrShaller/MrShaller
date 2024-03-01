@@ -28,8 +28,10 @@ Mail : nikitanedobezkin@gmail.com
 
 ### :writing_hand: Projects and Hackatons :
 2023
+- 12.2023 [Sovcombank Challenge][3] hackaton 4th place
 - 11.2023 [DataWagon][1] hackaton 5st place
 - 09.2023 [Rosneft][2] hackaton top 10 out 180
 
 [1]: https://github.com/MrShaller/DataWagon_Hackaton
 [2]: https://github.com/MrShaller/Rosneft_hackaton
+[3]: https://github.com/mishantique/Chat-bot-with-AI
