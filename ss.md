@@ -1,8 +1,7 @@
 Lab 2: ClickHouse Lab 
 ---------------------
 
-Евгений Павленко, группа J4140
-
+Евгений Павленко, группа J4151
 
 Схемы таблиц
 -------------
@@ -34,86 +33,154 @@ ORDER BY (user_id_out, user_id_in, datetime);
 Задача № 3: Создать MV для нахождения суммы всех входящих и исходящих транзакций от каждого пользователя.
 ----------------------------------------------------------------------------------------------------------------------
 
-1. Materialized view transactions_sums_months:
+1. Materialized view - in_transactions для входящих транзакций по месяцам для пользователей:
 ```sql
-CREATE MATERIALIZED VIEW epavlenko_412010.transactions_sums_months
+CREATE MATERIALIZED VIEW epavlenko_412010.in_transactions
 ON CLUSTER kube_clickhouse_cluster
 ENGINE = SummingMergeTree
-ORDER BY (user_id, date)
+ORDER BY (user_id, month)
 POPULATE AS
-WITH
-sum_in AS (
-    SELECT
-        user_id_in AS user_id,
-        toStartOfMonth(datetime) AS date,
-        sum(amount) AS sum_in
-    FROM epavlenko_412010.distr_transactions
-    GROUP BY
-        user_id,
-        date
-),
-sum_out AS (
-    SELECT
-        user_id_out AS user_id,
-        toStartOfMonth(datetime) AS date,
-        sum(amount) AS sum_out
-    FROM epavlenko_412010.distr_transactions
-    GROUP BY
-        user_id,
-        date
-)
 SELECT
-    sum_in.user_id,
-    sum_in.date,
-    sum_out,
-    sum_in
-FROM sum_in
-INNER JOIN sum_out ON (sum_in.user_id = sum_out.user_id) AND (sum_in.date = sum_out.date)
-ORDER BY 
-    user_id,
-    date
+    user_id_in AS user_id,
+    toYYYYMM(datetime) AS month,
+    sum(amount) AS sum_in
+FROM epavlenko_412010.transactions
+GROUP BY user_id_in, month
 ```
 
-2. Пример вывода:
+2. Распределенная таблица по MV, distr_in_transactions:
+```sql
+CREATE TABLE epavlenko_412010.distr_in_transactions
+ON CLUSTER kube_clickhouse_cluster AS epavlenko_412010.in_transactions
+ENGINE = Distributed(kube_clickhouse_cluster, epavlenko_412010,
+in_transactions, xxHash64(user_id));
+```
 
-![image](https://github.com/MrShaller/MrShaller/assets/62774239/7eb6c5d9-e844-45a6-98ee-426797873126)
+3. MV out_transactions и распределенная таблица distr_out_transactions для исходящих транзакций по месяцам для пользователей:
+```sql
+CREATE MATERIALIZED VIEW epavlenko_412010.out_transactions
+ON CLUSTER kube_clickhouse_cluster
+ENGINE = SummingMergeTree()
+ORDER BY (user_id, month)
+POPULATE AS
+SELECT
+    user_id_out AS user_id,
+    toYYYYMM(datetime) AS month,
+    sum(amount) AS sum_out
+FROM epavlenko_412010.transactions
+GROUP BY user_id_out, month
 
+CREATE TABLE epavlenko_412010.distr_out_transactions
+ON CLUSTER kube_clickhouse_cluster AS epavlenko_412010.out_transactions
+ENGINE = Distributed(kube_clickhouse_cluster, epavlenko_412010,
+out_transactions, xxHash64(user_id));
+```
+
+4. VIEW transactions_by_monts, который собирает из этих двух MV результат:
+```sql
+CREATE VIEW epavlenko_412010.transactions_by_months ON CLUSTER kube_clickhouse_cluster
+AS SELECT
+    user_id,
+    month,
+    sum(sum_in) AS sum_in,
+    sum(sum_out) AS sum_out
+FROM
+(
+    SELECT
+        user_id,
+        month,
+        sum_in,
+        0 AS sum_out
+    FROM
+        epavlenko_412010.distr_in_transactions
+    UNION ALL
+    SELECT
+        user_id,
+        month,
+        0 AS sum_in,
+        sum_out
+    FROM
+        epavlenko_412010.distr_out_transactions
+) AS combinatedview
+GROUP BY user_id, month;
+```
+
+
+5. Пример команды вызова и результат:
+
+![image](https://github.com/MrShaller/MrShaller/assets/62774239/a73f14cf-83eb-40cb-9429-0a1fcdc3b447)
 
 Задача № 4: Создать MV для нахождения saldo каждого пользователя (баланс на текущий момент).
 ---------------------------------------------------------------------------------------------------------------------
 
-1. Materialized view saldo_transactions:
+1. MV и распределенная таблица для входящих транзакций для каждого пользователя:
 ```sql
-CREATE MATERIALIZED VIEW epavlenko_412010.saldo_transactions
+CREATE MATERIALIZED VIEW epavlenko_412010.in_saldo
 ON CLUSTER kube_clickhouse_cluster
-ENGINE = SummingMergeTree
+ENGINE = SummingMergeTree()
 ORDER BY user_id
 POPULATE AS
-WITH
-saldo_in AS (
-    SELECT
-        user_id_in AS user_id,
-        sum(amount) AS saldo_in
-    FROM epavlenko_412010.distr_transactions
-    GROUP BY user_id
-),
-saldo_out AS (
-    SELECT
-        user_id_out AS user_id,
-        sum(amount) AS saldo_out
-    FROM epavlenko_412010.distr_transactions
-    GROUP BY user_id
-)
 SELECT
-    saldo_in.user_id,
-    saldo_out as transactions_out,
-    saldo_in as transactions_in,
-    (saldo_in - saldo_out) as saldo
-FROM saldo_in
-INNER JOIN saldo_out ON (saldo_in.user_id = saldo_out.user_id)
-ORDER BY user_id
+    user_id_in AS user_id,
+    sum(amount) AS sum_in
+FROM epavlenko_412010.transactions
+GROUP BY user_id_in
+
+CREATE TABLE epavlenko_412010.distr_in_saldo
+ON CLUSTER kube_clickhouse_cluster AS epavlenko_412010.in_saldo
+ENGINE = Distributed(kube_clickhouse_cluster, epavlenko_412010,
+in_saldo, xxHash64(user_id));
+
 ```
 
-Пример вывода:
+2. MV и распределенная таблица для исходящих транзакций для каждого пользователя:
+```sql
+CREATE MATERIALIZED VIEW epavlenko_412010.out_saldo
+ON CLUSTER kube_clickhouse_cluster
+ENGINE = SummingMergeTree()
+ORDER BY user_id
+POPULATE AS
+SELECT
+    user_id_out AS user_id,
+    sum(amount) AS sum_out
+FROM epavlenko_412010.transactions
+GROUP BY user_id_out
 
-![image](https://github.com/MrShaller/MrShaller/assets/62774239/ddfb896f-21f4-4e9f-9bdc-4b326cf639b5)
+CREATE TABLE epavlenko_412010.distr_out_saldo
+ON CLUSTER kube_clickhouse_cluster AS epavlenko_412010.out_saldo
+ENGINE = Distributed(kube_clickhouse_cluster, epavlenko_412010,
+out_saldo, xxHash64(user_id));
+```
+
+3. VIEW:
+```sql
+CREATE VIEW epavlenko_412010.saldo ON CLUSTER kube_clickhouse_cluster
+AS
+SELECT
+    user_id,
+    sum(sum_in) AS sum_in,
+    sum(sum_out) AS sum_out,
+    (sum_in - sum_out) AS saldo
+FROM
+(
+    SELECT
+        user_id,
+        sum_in,
+        0 AS sum_out
+    FROM
+        epavlenko_412010.distr_in_saldo
+    UNION ALL
+    SELECT
+        user_id,
+        0 AS sum_in,
+        sum_out
+    FROM
+        epavlenko_412010.distr_out_saldo
+) AS combinedviewsaldo
+GROUP BY user_id
+```
+
+Пример команды вызова и результат:
+
+![image](https://github.com/MrShaller/MrShaller/assets/62774239/bca1ed6a-bf17-4034-9681-56221014da7f)
+
