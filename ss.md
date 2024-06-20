@@ -26,7 +26,7 @@ steps_per_epoch = 400
 
 Модель сохранилась по пути: //content/drive/MyDrive/DTC part 6/stardist_model_one
 
-<img src="https://github.com/MrShaller/MrShaller/assets/62774239/9790d19b-2fff-41ff-b4dd-b2e6e15e1602" width="600"/>
+<img src="https://github.com/MrShaller/MrShaller/assets/62774239/9790d19b-2fff-41ff-b4dd-b2e6e15e1602" width="200"/>
 
 
 Задание №2: «Stardist_usage»
