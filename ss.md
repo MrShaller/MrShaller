@@ -54,14 +54,12 @@ IOU = 0.6376538014508436
 <img src="https://github.com/MrShaller/MrShaller/assets/62774239/cb6d41b8-32a2-4ef2-9894-27a54a96c844" width="450"/>
 
 4. Расчет OTR:
-
-$N_{px}^b$ = 215 515
-
+```
+N = 215 515
 a = 1997.15
-
-$k_{l}a$ = 499.29
-
+kla = 499.29
 OTR = 4.89
+```
 
 Задание №3: «Classical_method_usage»
 -----------------------------
