@@ -27,6 +27,9 @@ Mail : nikitanedobezkin@gmail.com
 ---
 
 ### :writing_hand: Projects and Hackatons :
+2024
+- [ML Talent match][4] hachaton 4th place
+
 2023
 - 12.2023 [Sovcombank Challenge][3] hackaton 4th place
 - 11.2023 [DataWagon][1] hackaton 5st place
