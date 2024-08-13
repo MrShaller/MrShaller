@@ -38,3 +38,4 @@ Mail : nikitanedobezkin@gmail.com
 [1]: https://github.com/MrShaller/DataWagon_Hackaton
 [2]: https://github.com/MrShaller/Rosneft_hackaton
 [3]: https://github.com/mishantique/Chat-bot-with-AI
+[4]: https://github.com/mishantique/HRTech
