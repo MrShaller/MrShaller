@@ -28,6 +28,7 @@ Mail : nikitanedobezkin@gmail.com
 
 ### :writing_hand: Projects and Hackatons :
 2024
+- [SENSE][6] hachaton 2nd place
 - [ML Talent match][4] hachaton 4th place
 
 2023
@@ -39,3 +40,4 @@ Mail : nikitanedobezkin@gmail.com
 [2]: https://github.com/MrShaller/Rosneft_hackaton
 [3]: https://github.com/mishantique/Chat-bot-with-AI
 [4]: https://github.com/mishantique/HRTech
+[6]: https://github.com/MrShaller/HackatonSENSE2
