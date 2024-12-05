@@ -28,8 +28,8 @@ Mail : nikitanedobezkin@gmail.com
 
 ### :writing_hand: Projects and Hackatons :
 2024
-- 11.2024 [SENSE][6] hachaton 2nd place
-- 11.2024 [BIV][5] hachaton 1st place - github rep is private
+- :trophy: 11.2024 [SENSE][6] hachaton 2nd place
+- :trophy: 11.2024 [BIV][5] hachaton 1st place - github rep is private
 - 02.2024 [ML Talent match][4] hachaton 4th place
 
 2023
