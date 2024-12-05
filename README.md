@@ -30,7 +30,7 @@ Mail : nikitanedobezkin@gmail.com
 2024
 - 11.2024 [SENSE][6] hachaton 2nd place
 - 11.2024 [BIV][5] hachaton 1st place - github rep is private
-- [ML Talent match][4] hachaton 4th place
+- 02.2024 [ML Talent match][4] hachaton 4th place
 
 2023
 - 12.2023 [Sovcombank Challenge][3] hackaton 4th place
